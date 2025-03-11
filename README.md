@@ -38,12 +38,12 @@ Website kasir yang dibangun menggunakan Laravel versi 12 dengan teknologi modern
 
 1. Clone repository ini ke lokal:
    ```bash
-   git clone <repository-url>
+   git clone https://github.com/anggarasa/ukk-anggara-saputra.git
    ```
 
 2. Masuk ke direktori proyek:
    ```bash
-   cd website-kasir
+   cd ukk-anggara-saputra
    ```
 
 3. Instal dependensi menggunakan Composer:
