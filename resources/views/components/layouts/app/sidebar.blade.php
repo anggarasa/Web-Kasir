@@ -119,7 +119,8 @@
         <flux:spacer />
 
         <flux:dropdown position="top" align="end">
-            <flux:profile :initials="auth()->user()->initials()" icon-trailing="chevron-down" />
+            <flux:profile :avatar="auth()->user()->image ? Storage::url(auth()->user()->image) : null"
+                :initials="auth()->user()->image ? null : auth()->user()->initials()" icon-trailing="chevron-down" />
 
             <flux:menu>
                 <flux:menu.radio.group>
