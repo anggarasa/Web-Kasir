@@ -165,6 +165,11 @@ class PaymentInput extends Component
                 'jumlah' => $product['quantity'], 
                 'subtotal' => $product['harga'] * $product['quantity'],
             ]);
+
+            $produk = Product::find($product['id']);
+            // kurangi stok produk
+            $stok = $produk->stok -= $product['quantity'];
+            $produk->update(['stok' => $stok]);
         }
 
         // kirim notifikasi success
