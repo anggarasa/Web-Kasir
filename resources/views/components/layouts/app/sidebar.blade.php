@@ -23,24 +23,24 @@
                     {{ __('Dashboard') }}
                 </flux:navlist.item>
 
-                @hasrole('superAdmin')
+                {{-- @hasrole('superAdmin')
                 <flux:navlist.item icon="user" class="mt-3" :href="route('user-admin')"
                     :current="request()->routeIs('user-admin')" wire:navigate>
                     {{ __('Admin User') }}
                 </flux:navlist.item>
-                @endhasrole
+                @endhasrole --}}
 
-                <flux:navlist.item icon="user-group" class="mt-3" :href="route('pelanggan')"
+                {{-- <flux:navlist.item icon="user-group" class="mt-3" :href="route('pelanggan')"
                     :current="request()->routeIs('pelanggan')" wire:navigate>
                     {{ __('Customer') }}
-                </flux:navlist.item>
+                </flux:navlist.item> --}}
 
-                <flux:navlist.item icon="shopping-cart" class="mt-3" :href="route('product')"
+                {{-- <flux:navlist.item icon="shopping-cart" class="mt-3" :href="route('product')"
                     :current="request()->routeIs('product')" wire:navigate>
                     {{ __('Product') }}
-                </flux:navlist.item>
+                </flux:navlist.item> --}}
 
-                <flux:navlist.item icon="inbox-arrow-down" class="mt-3" :href="route('payment-input')"
+                {{-- <flux:navlist.item icon="inbox-arrow-down" class="mt-3" :href="route('payment-input')"
                     :current="request()->routeIs('payment-input')" wire:navigate>
                     {{ __('Payment Input') }}
                 </flux:navlist.item>
@@ -48,7 +48,7 @@
                 <flux:navlist.item icon="document-currency-dollar" class="mt-3" :href="route('history')"
                     :current="request()->routeIs('history')" wire:navigate>
                     {{ __('Payment History') }}
-                </flux:navlist.item>
+                </flux:navlist.item> --}}
             </flux:navlist.group>
         </flux:navlist>
 
