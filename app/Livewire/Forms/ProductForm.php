@@ -38,7 +38,7 @@ class ProductForm extends Form
             $this->product->fill([
                 'nama_produk' => $this->name,
                 'harga_produk' => $this->price,
-                'stok_produk' => $this->stok,
+                'stok' => $this->stok,
             ]);
 
             $this->product->save();

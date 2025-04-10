@@ -29,7 +29,7 @@ class PaymentInput extends Component
     {
         $this->customer = Pelanggan::find($customerId);
         Flux::modal('select-customer')->close();
-        
+
         // Reset selected products when customer changes
         $this->resetProducts();
     }
@@ -39,28 +39,28 @@ class PaymentInput extends Component
         $this->customer = null;
         $this->resetProducts();
     }
-    
+
     public function resetSearch()
     {
         $this->search = '';
     }
-    
+
     public function resetProductSearch()
     {
         $this->searchProduk = '';
     }
-    
+
     public function resetProducts()
     {
         $this->selectedProducts = [];
         $this->productQuantities = [];
         $this->totalPayment = '';
     }
-    
+
     public function addProduct($productId)
     {
         $product = Product::find($productId);
-        
+
         if ($product && !in_array($productId, array_column($this->selectedProducts, 'id'))) {
             $this->selectedProducts[] = [
                 'id' => $product->id,
@@ -68,28 +68,28 @@ class PaymentInput extends Component
                 'harga' => $product->harga_produk,
                 'quantity' => 1
             ];
-            
+
             $this->productQuantities[$product->id] = 1;
         }
-        
+
         $this->searchProduk = '';
     }
-    
+
     public function removeProduct($productId)
     {
         $this->selectedProducts = array_filter($this->selectedProducts, function($product) use ($productId) {
             return $product['id'] != $productId;
         });
-        
+
         unset($this->productQuantities[$productId]);
     }
-    
+
     public function updateQuantity($productId, $quantity)
     {
         $quantity = max(1, intval($quantity)); // Ensure quantity is at least 1
-        
+
         $this->productQuantities[$productId] = $quantity;
-        
+
         foreach ($this->selectedProducts as $key => $product) {
             if ($product['id'] == $productId) {
                 $this->selectedProducts[$key]['quantity'] = $quantity;
@@ -97,7 +97,7 @@ class PaymentInput extends Component
             }
         }
     }
-    
+
     // Method baru untuk menghitung total harga semua produk
     public function getTotalPrice()
     {
@@ -105,28 +105,28 @@ class PaymentInput extends Component
             return $product['harga'] * $product['quantity'];
         });
     }
-    
+
     // Method baru untuk menghitung kembalian
     public function getChangeAmount()
     {
         $totalPrice = $this->getTotalPrice();
-        
+
         // Konversi totalPayment dari string ke integer (menghapus format Rp dan tanda titik)
         $payment = $this->totalPayment;
-        
+
         if (empty($payment)) {
             return 0;
         }
-        
+
         // Hilangkan karakter non-numerik
         $payment = preg_replace('/[^0-9]/', '', $payment);
-        
+
         // Konversi ke integer
         $payment = intval($payment);
-        
+
         // Hitung kembalian
         $change = $payment - $totalPrice;
-        
+
         // Jika kembalian negatif, kembalikan 0
         return max(0, $change);
     }
@@ -139,7 +139,7 @@ class PaymentInput extends Component
         // Convert totalPayment to integer (removing format)
         $payment = preg_replace('/[^0-9]/', '', $this->totalPayment);
         $payment = intval($payment);
-        
+
         // Check if payment amount is less than total price
         if ($payment < $this->getTotalPrice()) {
             $this->dispatch('notification', 'error', 'Payment amount is insufficient! Please enter the correct amount.');
@@ -162,7 +162,7 @@ class PaymentInput extends Component
             DetailTransaksi::create([
                 'transaksi_id' => $transaksi->id,
                 'product_id' => $product['id'],
-                'jumlah' => $product['quantity'], 
+                'jumlah' => $product['quantity'],
                 'subtotal' => $product['harga'] * $product['quantity'],
             ]);
 
@@ -177,20 +177,23 @@ class PaymentInput extends Component
 
         $this->reset();
     }
-    
+
     public function render()
     {
         $customers = Pelanggan::where('nama', 'like', '%' . $this->search . '%')
             ->orWhere('username', 'like', '%' . $this->search . '%')
             ->get();
 
-        $products = Product::where('nama_produk', 'like', '%' . $this->searchProduk . '%')
-                ->orWhere('harga_produk', 'like', '%' . $this->searchProduk . '%')
-                ->get();
-        
+        $products = Product::where(function ($query) {
+            $query->where('nama_produk', 'like', '%' . $this->searchProduk . '%')
+                ->orWhere('harga_produk', 'like', '%' . $this->searchProduk . '%');
+            })
+            ->where('stok', '>', 0)
+            ->get();
+
         $totalPrice = $this->getTotalPrice();
         $changeAmount = $this->getChangeAmount();
-        
+
         return view('livewire.payment.payment-input', [
             'customers' => $customers,
             'products' => $products,
