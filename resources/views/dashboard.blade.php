@@ -12,15 +12,18 @@
                 <div>
                     <p class="text-gray-500 dark:text-zinc-400 text-sm">Total Users</p>
                     @php
-                    $users = App\Models\User::count();
-                    $lastMonthUsers = App\Models\User::whereMonth('created_at', now()->subMonth())->count();
+                        // Total keseluruhan user saat ini
+                        $users = App\Models\User::count();
 
-                    // Cek apakah $lastMonthUsers bernilai 0
-                    if ($lastMonthUsers > 0) {
-                    $percentageChange = ($users - $lastMonthUsers) / $lastMonthUsers * 100;
-                    } else {
-                    $percentageChange = 0; // Atau bisa juga diatur ke nilai default lainnya
-                    }
+                        // Total user hingga akhir bulan lalu
+                        $totalLastMonth = App\Models\User::where('created_at', '<', now()->startOfMonth())->count();
+
+                        // Hitung persentase perubahan
+                        if ($totalLastMonth > 0) {
+                            $percentageChange = (($users - $totalLastMonth) / $totalLastMonth) * 100;
+                        } else {
+                            $percentageChange = $users > 0 ? 100 : 0;
+                        }
                     @endphp
                     <p class="text-2xl font-bold">{{ $users }}</p>
                 </div>
@@ -29,17 +32,18 @@
                 </div>
             </div>
             @if ($percentageChange > 0)
-            <p class="text-green-600 text-sm mt-2">
-                <i class="fas fa-arrow-up"></i> {{ number_format($percentageChange, 2) }}% dari bulan lalu
-            </p>
-            @elseif ($percentageChange < 0) <p class="text-red-600 text-sm mt-2">
-                <i class="fas fa-arrow-down"></i> {{ number_format(abs($percentageChange), 2) }}% dari bulan lalu
+                <p class="text-green-600 text-sm mt-2">
+                    <i class="fas fa-arrow-up"></i> {{ number_format($percentageChange, 2) }}% dari bulan lalu
                 </p>
-                @else
+            @elseif ($percentageChange < 0)
+                <p class="text-red-600 text-sm mt-2">
+                    <i class="fas fa-arrow-down"></i> {{ number_format(abs($percentageChange), 2) }}% dari bulan lalu
+                </p>
+            @else
                 <p class="text-grey-500 text-sm mt-2">
                     <i class="fas fa-minus"></i> 0% dari bulan lalu
                 </p>
-                @endif
+            @endif
         </div>
 
         <!-- Total Pelanggan -->
@@ -48,14 +52,18 @@
                 <div>
                     <p class="text-gray-500 dark:text-zinc-400 text-sm">Total Customer</p>
                     @php
-                    $customers = App\Models\Pelanggan::count();
-                    $lastMonthCustomers = App\Models\Pelanggan::whereMonth('created_at', now()->subMonth())->count();
+                        // Total keseluruhan customer saat ini
+                        $customers = App\Models\Pelanggan::count();
 
-                    if ($lastMonthCustomers > 0) {
-                    $percentageChangeCustomers = ($customers - $lastMonthCustomers) / $lastMonthCustomers * 100;
-                    } else {
-                    $percentageChangeCustomers = 0;
-                    }
+                        // Total customer hingga akhir bulan lalu
+                        $customersLastMonthEnd = App\Models\Pelanggan::where('created_at', '<', now()->startOfMonth())->count();
+
+                        // Hitung persentase perubahan
+                        if ($customersLastMonthEnd > 0) {
+                            $percentageChangeCustomers = (($customers - $customersLastMonthEnd) / $customersLastMonthEnd) * 100;
+                        } else {
+                            $percentageChangeCustomers = $customers > 0 ? 100 : 0;
+                        }
                     @endphp
                     <p class="text-2xl font-bold">{{ $customers }}</p>
                 </div>
@@ -64,18 +72,18 @@
                 </div>
             </div>
             @if ($percentageChangeCustomers > 0)
-            <p class="text-green-600 text-sm mt-2">
-                <i class="fas fa-arrow-up"></i> {{ number_format($percentageChangeCustomers, 2) }}% dari bulan lalu
-            </p>
-            @elseif ($percentageChangeCustomers < 0) <p class="text-red-600 text-sm mt-2">
-                <i class="fas fa-arrow-down"></i> {{ number_format(abs($percentageChangeCustomers), 2) }}% dari bulan
-                lalu
+                <p class="text-green-600 text-sm mt-2">
+                    <i class="fas fa-arrow-up"></i> {{ number_format($percentageChangeCustomers, 2) }}% dari bulan lalu
                 </p>
-                @else
+            @elseif ($percentageChangeCustomers < 0)
+                <p class="text-red-600 text-sm mt-2">
+                    <i class="fas fa-arrow-down"></i> {{ number_format(abs($percentageChangeCustomers), 2) }}% dari bulan lalu
+                </p>
+            @else
                 <p class="text-grey-500 text-sm mt-2">
                     <i class="fas fa-minus"></i> 0% dari bulan lalu
                 </p>
-                @endif
+            @endif
         </div>
 
         <!-- Total Produk -->
@@ -84,14 +92,18 @@
                 <div>
                     <p class="text-gray-500 dark:text-zinc-400 text-sm">Total Product</p>
                     @php
-                    $products = App\Models\Product::count();
-                    $lastMonthProducts = App\Models\Product::whereMonth('created_at', now()->subMonth())->count();
+                        // Total keseluruhan product saat ini
+                        $products = App\Models\Product::count();
 
-                    if ($lastMonthProducts > 0) {
-                    $percentageChangeProducts = ($products - $lastMonthProducts) / $lastMonthProducts * 100;
-                    } else {
-                    $percentageChangeProducts = 0;
-                    }
+                        // Total product hingga akhir bulan lalu
+                        $productsLastMonthEnd = App\Models\Product::where('created_at', '<', now()->startOfMonth())->count();
+
+                        // Hitung persentase perubahan
+                        if ($productsLastMonthEnd > 0) {
+                            $percentageChangeProducts = (($products - $productsLastMonthEnd) / $productsLastMonthEnd) * 100;
+                        } else {
+                            $percentageChangeProducts = $products > 0 ? 100 : 0;
+                        }
                     @endphp
                     <p class="text-2xl font-bold">{{ $products }}</p>
                 </div>
@@ -100,18 +112,18 @@
                 </div>
             </div>
             @if ($percentageChangeProducts > 0)
-            <p class="text-green-600 text-sm mt-2">
-                <i class="fas fa-arrow-up"></i> {{ number_format($percentageChangeProducts, 2) }}% dari bulan lalu
-            </p>
-            @elseif ($percentageChangeProducts < 0) <p class="text-red-600 text-sm mt-2">
-                <i class="fas fa-arrow-down"></i> {{ number_format(abs($percentageChangeProducts), 2) }}% dari bulan
-                lalu
+                <p class="text-green-600 text-sm mt-2">
+                    <i class="fas fa-arrow-up"></i> {{ number_format($percentageChangeProducts, 2) }}% dari bulan lalu
                 </p>
-                @else
+            @elseif ($percentageChangeProducts < 0)
+                <p class="text-red-600 text-sm mt-2">
+                    <i class="fas fa-arrow-down"></i> {{ number_format(abs($percentageChangeProducts), 2) }}% dari bulan lalu
+                </p>
+            @else
                 <p class="text-grey-500 text-sm mt-2">
                     <i class="fas fa-minus"></i> 0% dari bulan lalu
                 </p>
-                @endif
+            @endif
         </div>
 
         <!-- Total Transaksi -->
@@ -120,15 +132,18 @@
                 <div>
                     <p class="text-gray-500 dark:text-zinc-400 text-sm">Total Transaction</p>
                     @php
-                    $transactions = App\Models\Transaksi::count();
-                    $lastMonthTransactions = App\Models\Transaksi::whereMonth('created_at', now()->subMonth())->count();
+                        // Total keseluruhan transaksi saat ini
+                        $transactions = App\Models\Transaksi::count();
 
-                    if ($lastMonthTransactions > 0) {
-                    $percentageChangeTransactions = ($transactions - $lastMonthTransactions) / $lastMonthTransactions *
-                    100;
-                    } else {
-                    $percentageChangeTransactions = 0;
-                    }
+                        // Total transaksi hingga akhir bulan lalu
+                        $transactionsLastMonthEnd = App\Models\Transaksi::where('created_at', '<', now()->startOfMonth())->count();
+
+                        // Hitung persentase perubahan
+                        if ($transactionsLastMonthEnd > 0) {
+                            $percentageChangeTransactions = (($transactions - $transactionsLastMonthEnd) / $transactionsLastMonthEnd) * 100;
+                        } else {
+                            $percentageChangeTransactions = $transactions > 0 ? 100 : 0;
+                        }
                     @endphp
                     <p class="text-2xl font-bold">{{ $transactions }}</p>
                 </div>
@@ -137,18 +152,18 @@
                 </div>
             </div>
             @if ($percentageChangeTransactions > 0)
-            <p class="text-green-600 text-sm mt-2">
-                <i class="fas fa-arrow-up"></i> {{ number_format($percentageChangeTransactions, 2) }}% dari bulan lalu
-            </p>
-            @elseif ($percentageChangeTransactions < 0) <p class="text-red-600 text-sm mt-2">
-                <i class="fas fa-arrow-down"></i> {{ number_format(abs($percentageChangeTransactions), 2) }}% dari bulan
-                lalu
+                <p class="text-green-600 text-sm mt-2">
+                    <i class="fas fa-arrow-up"></i> {{ number_format($percentageChangeTransactions, 2) }}% dari bulan lalu
                 </p>
-                @else
+            @elseif ($percentageChangeTransactions < 0)
+                <p class="text-red-600 text-sm mt-2">
+                    <i class="fas fa-arrow-down"></i> {{ number_format(abs($percentageChangeTransactions), 2) }}% dari bulan lalu
+                </p>
+            @else
                 <p class="text-grey-500 text-sm mt-2">
                     <i class="fas fa-minus"></i> 0% dari bulan lalu
                 </p>
-                @endif
+            @endif
         </div>
     </div>
 
