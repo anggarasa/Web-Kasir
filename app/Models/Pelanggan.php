@@ -12,7 +12,6 @@ class Pelanggan extends Model
         'tgl_lahir',
         'no_hp',
         'alamat',
-        'foto',
     ];
 
     // hash many

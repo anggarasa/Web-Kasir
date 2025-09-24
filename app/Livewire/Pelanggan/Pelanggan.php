@@ -7,12 +7,11 @@ use App\Models\Pelanggan as ModelsPelanggan;
 use App\Models\User;
 use Livewire\Attributes\On;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 use Livewire\WithPagination;
 
 class Pelanggan extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithPagination;
 
     public PelangganForm $form;
 
@@ -47,7 +46,7 @@ class Pelanggan extends Component
 
         $this->dispatch('notification',
             type : 'warning',
-            message: 'Are you sure you want to delete ' . $pelanggan->nama . ' customer?', 
+            message: 'Are you sure you want to delete ' . $pelanggan->nama . ' customer?',
             actionEvent: 'deletePelanggan',
             actionParams: [$pelangganId]
         );
@@ -63,7 +62,7 @@ class Pelanggan extends Component
             message: 'Customer deleted successfully'
         );
     }
-    
+
     public function render()
     {
         $pelanggans = ModelsPelanggan::query()
@@ -80,7 +79,7 @@ class Pelanggan extends Component
             })
             ->latest()
             ->paginate(5);
-        
+
         return view('livewire.pelanggan.pelanggan', compact('pelanggans'));
     }
 

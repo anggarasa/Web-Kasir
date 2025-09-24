@@ -40,10 +40,6 @@
                 <tr>
                     <th
                         class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Foto
-                    </th>
-                    <th
-                        class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
                         Nama
                     </th>
                     <th
@@ -71,17 +67,6 @@
             <tbody class="divide-y divide-gray-200 dark:divide-zinc-700">
                 @forelse ($pelanggans as $pelanggan)
                 <tr class="hover:bg-gray-50 dark:hover:bg-zinc-700">
-                    <td class="px-6 py-4 whitespace-nowrap">
-                        @if ($pelanggan->foto)
-                        <img src="{{ asset('storage/'. $pelanggan->foto) }}" class="w-10 h-10 object-cover rounded-full"
-                            alt="{{ $pelanggan->nama }}">
-                        @else
-                        <div class="h-8 w-8 rounded-full bg-rose-100 flex items-center justify-center">
-                            <span class="text-rose-600 font-medium">{{ strtoupper(substr($pelanggan->nama, 0, 2))
-                                }}</span>
-                        </div>
-                        @endif
-                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-900 dark:text-gray-100">
                         {{ $pelanggan->nama }}
                     </td>
@@ -114,17 +99,12 @@
                     <div class="flex flex-col items-center">
                         <!-- Profile Picture -->
                         <div class="relative w-32 h-32 mb-4">
-                            @if ($pelanggan->foto)
-                            <img src="{{ asset('storage/'. $pelanggan->foto) }}" alt="{{ $pelanggan->nama }}"
-                                class="rounded-full w-full h-full object-cover border-4 border-rose-500 shadow-lg">
-                            @else
                             <div
                                 class="bg-rose-100 rounded-full w-full h-full border-4 border-rose-500 flex items-center justify-center">
                                 <span class="text-rose-600 font-bold text-5xl">
                                     {{ strtoupper(substr($pelanggan->nama, 0, 2)) }}
                                 </span>
                             </div>
-                            @endif
                         </div>
 
                         <!-- User Info -->
@@ -168,7 +148,7 @@
                 </flux:modal>
                 @empty
                 <tr>
-                    <td colspan="7" class="px-6 py-4 text-center text-gray-900 dark:text-gray-100">
+                    <td colspan="6" class="px-6 py-4 text-center text-gray-900 dark:text-gray-100">
                         No customer found
                     </td>
                 </tr>
@@ -189,28 +169,6 @@
         </div>
 
         <form wire:submit="save" class="space-y-6">
-            <!-- Input File -->
-            <flux:input type="file" wire:model="form.foto" label="Foto" />
-            <div wire:loading wire:target="form.foto" class="mt-2 text-gray-500 flex justify-center items-center">
-                <i class="fa-solid fa-circle-notch animate-spin text-xl mr-3"></i>
-                <span>Mengunggah...</span>
-            </div>
-            @if ($form->foto)
-            <div wire:loading.remove wire:target="form.foto" class="mt-4">
-                <div class="w-32 h-32 overflow-hidden rounded-lg shadow-md">
-                    <img src="{{ $form->foto->temporaryUrl() }}" alt="Preview" class="w-full h-full object-cover" />
-                </div>
-            </div>
-            @elseif ($form->oldFoto)
-            <!-- Jika tidak ada gambar baru, tampilkan gambar lama -->
-            <div class="mt-4">
-                <div class="w-32 h-32 overflow-hidden rounded-lg shadow-md">
-                    <img src="{{ asset('storage/' . $form->oldFoto) }}" alt="Old Foto"
-                        class="w-full h-full object-cover" />
-                </div>
-            </div>
-            @endif
-
             <!-- Input Name -->
             <flux:input label="Name" wire:model="form.name" placeholder="Your name" />
 

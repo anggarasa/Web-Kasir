@@ -46,16 +46,11 @@
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex items-center">
                             <div class="flex-shrink-0 h-10 w-10">
-                                @if ($user->image)
-                                <img class="h-10 w-10 rounded-full" src="{{ asset('storage/'. $user->image) }}"
-                                    alt="{{ $user->name }}">
-                                @else
                                 <div class="h-8 w-8 rounded-full bg-rose-100 flex items-center justify-center">
                                     <span class="text-rose-600 font-medium">{{ strtoupper(substr($user->name, 0,
                                         2))
                                         }}</span>
                                 </div>
-                                @endif
                             </div>
                             <div class="ml-4">
                                 <div class="text-sm font-medium text-zinc-900 dark:text-zinc-100">{{ $user->name }}
@@ -91,28 +86,6 @@
         </div>
 
         <form wire:submit="save" class="space-y-6">
-            <!-- Input File -->
-            <flux:input type="file" wire:model="form.image" label="Foto" />
-            <div wire:loading wire:target="form.image" class="mt-2 text-gray-500 flex justify-center items-center">
-                <i class="fa-solid fa-circle-notch animate-spin text-xl mr-3"></i>
-                <span>Mengunggah...</span>
-            </div>
-            @if ($form->image)
-            <div wire:loading.remove wire:target="form.image" class="mt-4">
-                <div class="w-32 h-32 overflow-hidden rounded-lg shadow-md">
-                    <img src="{{ $form->image->temporaryUrl() }}" alt="Preview" class="w-full h-full object-cover" />
-                </div>
-            </div>
-            @elseif ($form->oldImage)
-            <!-- Jika tidak ada gambar baru, tampilkan gambar lama -->
-            <div class="mt-4">
-                <div class="w-32 h-32 overflow-hidden rounded-lg shadow-md">
-                    <img src="{{ asset('storage/' . $form->oldImage) }}" alt="Old Image"
-                        class="w-full h-full object-cover" />
-                </div>
-            </div>
-            @endif
-
             <!-- Input Name -->
             <flux:input label="Name" wire:model="form.name" placeholder="Your name" />
 

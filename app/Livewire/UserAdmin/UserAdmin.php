@@ -4,17 +4,15 @@ namespace App\Livewire\UserAdmin;
 
 use App\Models\User;
 use Livewire\Component;
-use Livewire\WithFileUploads;
 use App\Livewire\Forms\UserAdminForm;
-use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 
 class UserAdmin extends Component
 {
-    use WithFileUploads, WithPagination;
-    
+    use WithPagination;
+
     public UserAdminForm $form;
 
     #[Url()]
@@ -34,7 +32,7 @@ class UserAdmin extends Component
     public function confirmDeleteUser($id)
     {
         $user = User::findOrFail($id);
-    
+
         $this->dispatch('notification',
             type: 'warning',
             message: 'Are you sure, you want to delete the admin user '. $user->name .' ?',
@@ -58,7 +56,7 @@ class UserAdmin extends Component
     {
         $this->resetPage();
     }
-    
+
     public function render()
     {
         return view('livewire.user-admin.user-admin', [

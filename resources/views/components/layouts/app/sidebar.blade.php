@@ -70,8 +70,7 @@
         <!-- Desktop User Menu -->
         <flux:dropdown position="bottom" align="start">
             <flux:profile :name="auth()->user()->name"
-                :avatar="auth()->user()->image ? Storage::url(auth()->user()->image) : null"
-                :initials="auth()->user()->image ? null : auth()->user()->initials()"
+                :initials="auth()->user()->initials()"
                 icon-trailing="chevrons-up-down" />
 
             <flux:menu class="w-[220px]">
@@ -119,8 +118,7 @@
         <flux:spacer />
 
         <flux:dropdown position="top" align="end">
-            <flux:profile :avatar="auth()->user()->image ? Storage::url(auth()->user()->image) : null"
-                :initials="auth()->user()->image ? null : auth()->user()->initials()" icon-trailing="chevron-down" />
+            <flux:profile :initials="auth()->user()->initials()" icon-trailing="chevron-down" />
 
             <flux:menu>
                 <flux:menu.radio.group>
